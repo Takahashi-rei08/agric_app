@@ -15,6 +15,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('homeindex')" :active="request()->routeIs('homeindex')">
+                        {{ __('ホーム') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('searchindex')" :active="request()->routeIs('searchindex')">
+                        {{ __('検索') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('postindex')" :active="request()->routeIs('postindex')">
+                        {{ __('投稿') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('calendarindex')" :active="request()->routeIs('calendarindex')">
+                        {{ __('カレンダー') }}
+                    </x-nav-link>
                 </div>
             </div>
 
