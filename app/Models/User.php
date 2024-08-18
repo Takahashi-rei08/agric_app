@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\Schedule;
+use App\Models\Location;
 
 class User extends Authenticatable
 {
@@ -42,4 +46,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    //commentsテーブルに対するリレーション
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+    
+    //postsテーブルに対するリレーション
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+    
+    //schedulesテーブルに対するリレーション
+    public function schedules(){
+        return $this->hasMany(Schedule::class);
+    }
+    
+    //locationsテーブルに対するリレーション
+    public function location(){
+        return $this->belongsTo(Location::class);
+    }
 }
