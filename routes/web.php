@@ -42,7 +42,9 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
 });
 
 Route::controller(CalendarController::class)->middleware(['auth'])->group(function(){
-    Route::get('/calendar', 'calendarindex')->name('calendarindex');
+    Route::get('/calendar', 'show')->name('show');// カレンダー表示
+    Route::post('/calendar/add_schedule', 'add_schedule')->name('add_schedule'); // 予定の新規追加
+    Route::post('/calendar/get_schedule', 'get_schedule')->name("get_schedule"); // DBに登録した予定を取得
 });
 
 require __DIR__.'/auth.php';

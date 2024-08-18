@@ -24,7 +24,7 @@
                     <x-nav-link :href="route('postindex')" :active="request()->routeIs('postindex')">
                         {{ __('投稿') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('calendarindex')" :active="request()->routeIs('calendarindex')">
+                    <x-nav-link :href="route('show')" :active="request()->routeIs('show')">
                         {{ __('カレンダー') }}
                     </x-nav-link>
                 </div>

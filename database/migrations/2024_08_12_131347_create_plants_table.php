@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('plants', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('variety', 50);
+            $table->string('plant_name', 50);
+            $table->string('plant_variety', 50)->nullable(true);
         });
     }
 
