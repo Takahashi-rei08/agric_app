@@ -2,8 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Home</title>
+        <title>Post</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,10 +15,10 @@
         <x-slot name="header">
             app_name
         </x-slot>
-        <body class='homes'>
-            <h1>home</h1>
-            <div>
-                <h2>最新投稿</h2>
+        <body class='posts'>
+            <button onclick="location.href='/post/add_post'" class='post_botton'>新規投稿</botton>
+            <div class='myposts'>
+                <h1>自分の投稿</h1>
             </div>
         </body>
     </x-app-layout>

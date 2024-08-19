@@ -15,7 +15,11 @@ use App\Models\User;
 
 class PostController extends Controller
 {
-    public function postindex(){
-        return view('posts.postindex');
+    public function postindex(Post $post){
+        return view('posts.postindex')->with(['posts' => $post->getPaginateByLimit(5)]);
+    }
+    
+    public function add_post(){
+        return view('posts.add_post');
     }
 }

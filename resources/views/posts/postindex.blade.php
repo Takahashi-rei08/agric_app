@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>app_name</title>
+        <title>Post</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -15,9 +15,27 @@
         <x-slot name="header">
             app_name
         </x-slot>
-        <body class='posts'>
-            <div class='post'>
-                <h1>投稿</h1>
+        <body>
+            <button onclick="location.href='/post/add_post'" class='post_botton'>新規投稿</botton>
+            <div>
+                <h1>自分の投稿</h1>
+                <div class='myposts'>
+                    @foreach($posts as $post)
+                        <div class='mypost'>
+                            <h2 class='title'>{{ $post->post_title }}</h2>
+                            @if($post->post_image)
+                                @php
+                                    $img = "data:image/jpeg;base64," . base64_encode($record["picture"]); 
+                                @endphp
+                                <img src=<?= $img ?> class='image'>
+                            @endif
+                            @if($post->post_body)
+                                <p class='body'>{{ $post->post_body }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+                <div class='paginate'>{{ $posts->links() }}</div>
             </div>
         </body>
     </x-app-layout>
