@@ -39,6 +39,7 @@ Route::controller(SearchController::class)->middleware(['auth'])->group(function
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
     Route::get('/post', 'postindex')->name('postindex');
+    Route::get('/post/add_post', 'add_post')->name('add_post');
 });
 
 Route::controller(CalendarController::class)->middleware(['auth'])->group(function(){
