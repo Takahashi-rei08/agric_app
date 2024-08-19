@@ -46,6 +46,8 @@ Route::controller(CalendarController::class)->middleware(['auth'])->group(functi
     Route::get('/calendar', 'show')->name('show');// カレンダー表示
     Route::post('/calendar/add_schedule', 'add_schedule')->name('add_schedule'); // 予定の新規追加
     Route::post('/calendar/get_schedule', 'get_schedule')->name("get_schedule"); // DBに登録した予定を取得
+    Route::put('/calendar/update', 'update')->name("update"); // 予定の更新
+    Route::delete('/calendar/delete', 'delete')->name("delete"); // 予定の削除
 });
 
 require __DIR__.'/auth.php';

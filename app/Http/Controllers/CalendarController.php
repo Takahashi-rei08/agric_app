@@ -72,4 +72,30 @@ class CalendarController extends Controller
             ->where('start_date', '<', $end_date) // AND条件
             ->get();
     }
+    
+    public function update(Request $request, Schedule $schedule){
+        $input = new Schedule();
+
+        $input->event_title = $request->input('event_title');
+        $input->event_body = $request->input('event_body');
+        $input->start_date = $request->input('start_date');
+        $input->end_date = date("Y-m-d", strtotime("{$request->input('end_date')} +1 day"));
+        $input->event_color = $request->input('event_color');
+        $input->event_border_color = $request->input('event_color');
+
+        // 更新する予定をDBから探し（find）、内容が変更していたらupdated_timeを変更（fill）して、DBに保存する（save）
+        $schedule->find($request->input('id'))->fill($input->attributesToArray())->save(); // fill()の中身はArray型が必要だが、$inputのままではコレクションが返ってきてしまうため、Array型に変換
+
+        // カレンダー表示画面にリダイレクトする
+        return redirect(route("show"));
+    }
+    
+    // 予定の削除
+    public function delete(Request $request, Schedule $schedule){
+        // 削除する予定をDBから探し（find）、DBから物理削除する（delete）
+        $schedule->find($request->input('id'))->delete();
+
+        // カレンダー表示画面にリダイレクトする
+        return redirect(route("show"));
+    }
 }
