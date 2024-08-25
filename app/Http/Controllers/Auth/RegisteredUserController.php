@@ -18,9 +18,62 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
+    public function city($pref_code)
+    {
+        $client = new \GuzzleHttp\Client();
+        
+        $url = 'https://opendata.resas-portal.go.jp/api/v1/';
+        
+        $response = $client->request(
+            'GET',
+            $url."cities?prefCode=".$pref_code,
+            array(
+                "headers" => array(
+                "X-API-KEY" => config('services.resas.key'),
+                )
+            )
+        );
+        $city_datas = json_decode($response->getBody(), true)['result'];
+        
+         $response = $client->request(
+            'GET',
+            $url."prefectures",
+            array(
+                "headers" => array(
+                "X-API-KEY" => config('services.resas.key'),
+                )
+            )
+        );
+        $pref_datas = json_decode($response->getBody(), true)['result'];
+        
+        return view('auth.register')->with([
+            'city_datas' => $city_datas,
+            'pref_datas' => $pref_datas,
+            ]);
+    }
+    
+    
     public function create(): View
     {
-        return view('auth.register');
+        $client = new \GuzzleHttp\Client();
+        
+        $url = 'https://opendata.resas-portal.go.jp/api/v1/';
+        
+        $response = $client->request(
+            'GET',
+            $url."prefectures",
+            array(
+                "headers" => array(
+                "X-API-KEY" => config('services.resas.key'),
+                )
+            )
+        );
+        $pref_datas = json_decode($response->getBody(), true)['result'];
+        
+        
+        return view('auth.register')->with([
+            'pref_datas' => $pref_datas,
+            ]);
     }
 
     /**
