@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,10 @@ use App\Http\Controllers\SearchController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::controller(RegisteredUserController::class)->group(function () {
+    Route::get('/register/{pref_code}', 'city');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -43,8 +48,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
 });
 
 Route::controller(CalendarController::class)->middleware(['auth'])->group(function(){
-    Route::get('/calendar', 'test')->name('show');
-    //Route::get('/calendar', 'show')->name('show');// カレンダー表示
+    Route::get('/calendar', 'show')->name('show');// カレンダー表示
     Route::post('/calendar/add_schedule', 'add_schedule')->name('add_schedule'); // 予定の新規追加
     Route::post('/calendar/get_schedule', 'get_schedule')->name("get_schedule"); // DBに登録した予定を取得
     

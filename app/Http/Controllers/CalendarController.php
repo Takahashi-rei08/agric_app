@@ -72,23 +72,4 @@ class CalendarController extends Controller
             ->where('start_date', '<', $end_date) // AND条件
             ->get();
     }
-    
-    public function test(){
-        $client = new \GuzzleHttp\Client();
-        
-        $url = 'https://opendata.resas-portal.go.jp/api/v1/';
-        
-        $response = $client->request(
-            'GET',
-            $url."prefectures",
-            array(
-                "headers" => array(
-                "X-API-KEY" => config('services.resas.key'),
-                )
-            )
-        );
-        $datas = json_decode($response->getBody(), true);
-        dump(config('services.resas.key'));
-        dd($datas);
-    }
 }
