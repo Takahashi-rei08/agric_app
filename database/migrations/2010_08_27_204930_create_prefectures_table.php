@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prefectures', function (Blueprint $table) {
             $table->id();
-            $table->integer('pref_code');
+            $table->string('pref_code');
             $table->string('pref_name');
         });
     }
