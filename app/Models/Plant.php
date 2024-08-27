@@ -27,4 +27,6 @@ class Plant extends Model
     public function cities(){
         return $this->belongsToMany(City::class, 'plant_city');
     }
+    
+    public $timestamps = false;
 }

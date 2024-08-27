@@ -20,4 +20,6 @@ class Calendar extends Model
     public function post(){
         return $this->belongsTo(Post::class);
     }
+    
+    public $timestamps = false;
 }

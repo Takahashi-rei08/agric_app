@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Location;
+use App\Models\Prefecture;
+use App\Models\City;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -83,10 +84,13 @@ class RegisteredUserController extends Controller
         $pref_code = $pref_data[0];
         $pref_name = $pref_data[1];
         
-        $location = Location::create([
+        if (is_null(Prefecture::where('pref_code', $pref_code)->first())){
+            $prefecture = Prefecture::create([
             'pref_code' => $pref_code,
             'pref_name' => $pref_name,
-        ]);
+            ]);
+        }
+        
         
         $user = User::create([
             'name' => $request->name,
@@ -105,21 +109,34 @@ class RegisteredUserController extends Controller
         return redirect($city.'/'.$pref_code);
     }
     
-    public function storeCity(Request $request, User $user): RedirectResponse
+    public function storeCity(Request $request): RedirectResponse
     {
         $request->validate([
             'select_city' => ['required']
         ]);
         
         $city_data = preg_split("/,/", $request->select_city);
-        $city_code = $pref_data[0];
-        $city_name = $pref_data[1];
+        $pref_code = $city_data[0];
+        $city_code = $city_data[1];
+        $city_name = $city_data[2];
         
-        $user->locations()->fill([
-            'city_code' => $city_code,
-            'city_name' => $city_name,
-        ])->save();
         
-        return redirect(RouteServiceProvider::city);
+        if (is_null(City::where('city_code', $city_code)->first())){
+            
+            $prefId = Prefecture::where('pref_code', $pref_code)->first()->id;
+            
+            $city = City::create([
+                'city_code' => $city_code,
+                'city_name' => $city_name,
+                'prefecture_id' => $prefId,
+            ])->save();
+        }
+        
+        $cityId = City::where('city_code', $city_code)->first()->id;
+        $user = Auth::user();
+        $user->city_id = $cityId;
+        $user->save();
+        
+        return redirect(RouteServiceProvider::HOME);
     }
 }

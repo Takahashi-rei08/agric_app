@@ -27,4 +27,6 @@ class City extends Model
     public function plants(){
         return $this->belongsToMany(Plant::class, 'plant_location');
     }
+    
+    public $timestamps = false;
 }
