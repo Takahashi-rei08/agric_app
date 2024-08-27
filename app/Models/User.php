@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Schedule;
-use App\Models\Location;
+use App\Models\City;
 
 class User extends Authenticatable
 {
@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'city_id'
     ];
 
     /**
@@ -62,8 +63,8 @@ class User extends Authenticatable
         return $this->hasMany(Schedule::class);
     }
     
-    //locationsテーブルに対するリレーション
-    public function location(){
-        return $this->belongsTo(Location::class);
+    //Citiesテーブルに対するリレーション
+    public function City(){
+        return $this->belongsTo(City::class);
     }
 }

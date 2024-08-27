@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable(true);
             $table->string('password');
-            $table->foreignId('location_id')->nullable(true)->constrained();#FK
+            $table->foreignId('city_id')->nullable(true)->constrained();#FK
             $table->rememberToken();
             $table->timestamps();
         });

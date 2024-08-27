@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Post;
 use App\Models\Schedule;
 use App\Models\Plant_Location;
-use App\Models\Location;
+use App\Models\City;
 
 class Plant extends Model
 {
@@ -24,7 +24,7 @@ class Plant extends Model
     }
     
     //locationsテーブルに対するリレーション
-    public function locations(){
-        return $this->belongsToMany(Location::class, 'plant_location');
+    public function cities(){
+        return $this->belongsToMany(City::class, 'plant_city');
     }
 }

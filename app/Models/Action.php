@@ -17,7 +17,7 @@ class Action extends Model
     }
     
     //postsテーブルに対するリレーション
-    public function schedules(){
-        return $this->hasMany(Schedule::class);
+    public function posts(){
+        return $this->hasMany(Post::class);
     }
 }

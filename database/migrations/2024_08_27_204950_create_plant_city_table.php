@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plant_location', function (Blueprint $table) {
-            $table->id();#PK
+        Schema::create('plant_city', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('plant_id')->constrained();#FK
-            $table->foreignId('location_id')->constrained();#FK
+            $table->foreignId('city_id')->constrained();#FK
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plant_location');
+        Schema::dropIfExists('plants_cities');
     }
 };

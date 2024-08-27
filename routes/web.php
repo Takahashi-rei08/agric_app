@@ -19,8 +19,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 |
 */
 
-Route::controller(RegisteredUserController::class)->group(function () {
-    Route::get('/register/{pref_code}', 'city');
+Route::controller(RegisteredUserController::class)->middleware('auth')->group(function () {
+    Route::get('/city/{pref_code}', 'city');
 });
 
 Route::get('/dashboard', function () {
