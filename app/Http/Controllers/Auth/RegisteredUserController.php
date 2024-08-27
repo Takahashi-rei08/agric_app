@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Location;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -35,20 +36,8 @@ class RegisteredUserController extends Controller
         );
         $city_datas = json_decode($response->getBody(), true)['result'];
         
-         $response = $client->request(
-            'GET',
-            $url."prefectures",
-            array(
-                "headers" => array(
-                "X-API-KEY" => config('services.resas.key'),
-                )
-            )
-        );
-        $pref_datas = json_decode($response->getBody(), true)['result'];
-        
-        return view('auth.register')->with([
+        return view('auth.register-city')->with([
             'city_datas' => $city_datas,
-            'pref_datas' => $pref_datas,
             ]);
     }
     
@@ -75,7 +64,7 @@ class RegisteredUserController extends Controller
             'pref_datas' => $pref_datas,
             ]);
     }
-
+    
     /**
      * Handle an incoming registration request.
      *
@@ -87,18 +76,50 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'select_prefecture' => ['required']
         ]);
-
+        
+        $pref_data = preg_split("/,/", $request->select_prefecture);
+        $pref_code = $pref_data[0];
+        $pref_name = $pref_data[1];
+        
+        $location = Location::create([
+            'pref_code' => $pref_code,
+            'pref_name' => $pref_name,
+        ]);
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        
+        
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        
+        //市区町村の登録ページに飛ぶ
+        $city = RouteServiceProvider::CITY;
+        return redirect($city.'/'.$pref_code);
+    }
+    
+    public function storeCity(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'select_city' => ['required']
+        ]);
+        
+        $city_data = preg_split("/,/", $request->select_city);
+        $city_code = $pref_data[0];
+        $city_name = $pref_data[1];
+        
+        $user->locations()->fill([
+            'city_code' => $city_code,
+            'city_name' => $city_name,
+        ])->save();
+        
+        return redirect(RouteServiceProvider::city);
     }
 }
