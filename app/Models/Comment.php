@@ -11,6 +11,12 @@ class Comment extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'user_id',
+        'post_id',
+        'comment',
+    ];
+    
      //usersテーブルに対するリレーション
     public function user(){
         return $this->belongsToMany(User::class);

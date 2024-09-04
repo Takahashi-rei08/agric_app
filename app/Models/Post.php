@@ -14,6 +14,20 @@ class Post extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'user_id',
+        'plant_id',
+        'plantVariety_id',
+        'action_id',
+        'title',
+        'body',
+        'image',
+        'start_date',
+        'end_date',
+        'event_color',
+        'event_border_color',
+    ];
+    
     //calendarsテーブルに対するリレーション
     public function calendar(){
         return $this->hasOne(Calendar::class);
@@ -34,14 +48,13 @@ class Post extends Model
         return $this->belongsTo(Plant::class);
     }
     
+    //plantVarietyテーブルに対するリレーション
+    public function plantVariety(){
+        return $this->belongsTo(PlantVariety::class);
+    }
+    
     //actionsテーブルに対するリレーション
     public function action(){
         return $this->belongsTo(Action::class);
-    }
-    
-    public function getPaginateByLimit(int $limit_count = 5)
-    {
-        // updated_atで降順に並べたあと、limitで件数制限をかける
-        return $this->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
 }

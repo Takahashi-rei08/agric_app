@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('city_code')->nullable(true);
-            $table->string('city_name')->nullable(true);
+            $table->string('code');
+            $table->string('name');
             $table->foreignId('prefecture_id')->constrained()->onDelete('cascade');#FK
         });
     }

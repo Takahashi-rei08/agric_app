@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calendars', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('post_id')->nullable(true)->constrained()->onDelete('cascade');#FK
-            $table->foreignId('schedule_id')->nullable(true)->constrained()->onDelete('cascade');#FK
+        Schema::create('plantVariety_city', function (Blueprint $table) {
+            $table->foreignId('plantVariety_id')->nullable(true)->constrained();#FK
+            $table->foreignId('city_id')->nullable(true)->constrained();#FK
+            $table->primary(['plantVariety_id', 'city_id']);
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calendars');
+        Schema::dropIfExists('plantVariety_city');
     }
 };

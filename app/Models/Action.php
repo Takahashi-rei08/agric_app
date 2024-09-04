@@ -11,6 +11,10 @@ class Action extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'name',
+    ];
+    
     //schedulesテーブルに対するリレーション
     public function schedules(){
         return $this->hasMany(Schedule::class);

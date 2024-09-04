@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();#PK
             $table->foreignId('user_id')->constrained()->onDelete('cascade');#FK
             $table->foreignId('post_id')->constrained()->onDelete('cascade');#FK
-            $table->string('comment', 200)->nullable();
+            $table->string('comment', 200);
             $table->timestamps();
             $table->softDeletes();
         });

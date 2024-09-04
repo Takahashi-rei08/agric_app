@@ -11,8 +11,8 @@ class Prefecture extends Model
     use HasFactory;
     
     protected $fillable = [
-        'pref_code',
-        'pref_name',
+        'code',
+        'name',
     ];
     
     //usersテーブルに対するリレーション
