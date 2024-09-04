@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');#FK
             $table->foreignId('plant_id')->nullable(true)->constrained()->onDelete('cascade');#FK
+            $table->foreignId('plantVariety_id')->nullable(true)->constrained()->onDelete('cascade');#FK
             $table->foreignId('action_id')->nullable(true)->constrained()->onDelete('cascade');#FK
             $table->string('event_title')->comment('イベント名');
             $table->string('event_body')->nullable(true)->comment('メモ');

@@ -44,7 +44,14 @@ Route::controller(SearchController::class)->middleware(['auth'])->group(function
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
     Route::get('/post', 'postindex')->name('postindex');
-    Route::get('/post/add_post', 'add_post')->name('add_post');
+    Route::get('/post/create', 'create')->name('create_post');
+    Route::post('/post/create', 'store')->name('store_post');
+    Route::get('/action', 'add_action')->name('add_action');
+    Route::post('/action', 'store_action')->name('store_action');
+    Route::get('/plant', 'add_plant')->name('add_plant');
+    Route::post('/plant', 'store_plant')->name('store_plant');
+    Route::get('/plant/{plant_code}', 'add_plant_variety')->name('add_plant_variety');
+    Route::post('/plant/{plant_code}', 'store_plant_variety')->name('store_plant_variety');
 });
 
 Route::controller(CalendarController::class)->middleware(['auth'])->group(function(){

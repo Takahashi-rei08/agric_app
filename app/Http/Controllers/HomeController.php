@@ -6,16 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Action;
 use App\Models\Calendar;
 use App\Models\Comment;
-use App\Models\Location;
+use App\Models\City;
 use App\Models\Plant;
-use App\Models\Plant_Location;
+use App\Models\PlantVariety;
+use App\Models\Plant_City;
+use App\Models\PlantVariety_City;
 use App\Models\Post;
 use App\Models\Schedule;
 use App\Models\User;
 
 class HomeController extends Controller
 {
-    public function homeindex(){
-        return view('homes.homeindex');
+    public function homeindex(Post $post){
+        return view('homes.homeindex')->with([
+            'posts' => $post->orderBy('updated_at', 'DESC')->paginate(10),
+        ]);
     }
 }

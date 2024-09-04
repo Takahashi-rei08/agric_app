@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
         
         return view('auth.register-city')->with([
             'city_datas' => $city_datas,
-            ]);
+        ]);
     }
     
     
@@ -63,7 +63,7 @@ class RegisteredUserController extends Controller
         
         return view('auth.register')->with([
             'pref_datas' => $pref_datas,
-            ]);
+        ]);
     }
     
     /**
@@ -84,10 +84,10 @@ class RegisteredUserController extends Controller
         $pref_code = $pref_data[0];
         $pref_name = $pref_data[1];
         
-        if (is_null(Prefecture::where('pref_code', $pref_code)->first())){
+        if (is_null(Prefecture::where('code', $pref_code)->first())){
             $prefecture = Prefecture::create([
-            'pref_code' => $pref_code,
-            'pref_name' => $pref_name,
+            'code' => $pref_code,
+            'name' => $pref_name,
             ]);
         }
         
@@ -121,18 +121,18 @@ class RegisteredUserController extends Controller
         $city_name = $city_data[2];
         
         
-        if (is_null(City::where('city_code', $city_code)->first())){
+        if (is_null(City::where('code', $city_code)->first())){
             
-            $prefId = Prefecture::where('pref_code', $pref_code)->first()->id;
+            $prefId = Prefecture::where('code', $pref_code)->first()->id;
             
             $city = City::create([
-                'city_code' => $city_code,
-                'city_name' => $city_name,
+                'code' => $city_code,
+                'name' => $city_name,
                 'prefecture_id' => $prefId,
             ])->save();
         }
         
-        $cityId = City::where('city_code', $city_code)->first()->id;
+        $cityId = City::where('code', $city_code)->first()->id;
         $user = Auth::user();
         $user->city_id = $cityId;
         $user->save();

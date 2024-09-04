@@ -6,16 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Post;
 use App\Models\Schedule;
-use App\Models\PlantVariety;
+use App\Models\Plant;
 use App\Models\Plant_City;
 use App\Models\City;
 
-class Plant extends Model
+class PlantVariety extends Model
 {
     use HasFactory;
     
+    protected $table = 'plantVarieties';
+    
     protected $fillable = [
         'name',
+        'plant_id',
     ];
     
     //postsテーブルに対するリレーション
@@ -28,14 +31,14 @@ class Plant extends Model
         return $this->hasMany(Schedule::class);
     }
     
-    //PlantVarietiesテーブルに対するリレーション
-    public function plantVarieties(){
-        return $this->hasMany(PlantVariety::class);
+    //plantsテーブルに対するリレーション
+    public function plant(){
+        return $this->belongsTo(Plant::class);
     }
     
     //citiesテーブルに対するリレーション
     public function cities(){
-        return $this->belongsToMany(City::class, 'plant_city');
+        return $this->belongsToMany(City::class, 'plantVariety_city');
     }
     
     public $timestamps = false;
