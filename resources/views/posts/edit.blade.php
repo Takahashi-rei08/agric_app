@@ -30,9 +30,9 @@
                             @if($post->post_body)
                                 <p class='body'>{{ $post->body }}</p>
                             @endif
-                            <a href="/{{ $post->id }}/edit">
+                            <button action"{{ route('') }}">
                                 編集
-                            </a>
+                            </button>
                         </div>
                     @endforeach
                 </div>

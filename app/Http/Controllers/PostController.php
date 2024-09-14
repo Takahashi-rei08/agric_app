@@ -48,6 +48,16 @@ class PostController extends Controller
         return view('posts.postindex')->with(['posts' => $post]);
     }
     
+    public function edit(Request $request){
+        
+        
+    }
+    
+    public function update(Request $request){
+        
+        
+    }
+    
     public function add_action(){
         return view('insertDB.insertAction');
     }
