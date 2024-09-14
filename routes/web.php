@@ -46,6 +46,10 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::get('/post', 'postindex')->name('postindex');
     Route::get('/post/create', 'create')->name('create_post');
     Route::post('/post/create', 'store')->name('store_post');
+    
+    Route::get('/post/{post}/edit', 'edit')->name('edit_post');
+    Route::put('/post/{post}', 'update')->name('update_post');
+    
     Route::get('/action', 'add_action')->name('add_action');
     Route::post('/action', 'store_action')->name('store_action');
     Route::get('/plant', 'add_plant')->name('add_plant');
