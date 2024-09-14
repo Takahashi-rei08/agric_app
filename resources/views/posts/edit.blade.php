@@ -16,6 +16,24 @@
             投稿
         </x-slot>
         <body>
+            <h1 class="title">編集</h1>
+            <div class="content">
+                <form action="/posts/{{ $post->id }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class='post__title'>
+                        <h2>タイトル</h2>
+                        <input type='text' name='post[title]' value="{{ $post->title }}">
+                    </div>
+                    <div class='post__body'>
+                        <h2>内容</h2>
+                        <input type='text' name='post[body]' value="{{ $post->body }}">
+                    </div>
+                    <input type="submit" value="保存">
+                </form>
+            </div>
+        </body>
+        <body>
             <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</botton><!--新規投稿の作成-->
             <div>
                 <h1>自分の投稿</h1>
