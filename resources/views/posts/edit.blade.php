@@ -18,7 +18,7 @@
         <body>
             <h1 class="title">編集</h1>
             <div class="content">
-                <form action="/posts/{{ $post->id }}" method="POST">
+                <form action=="../../../../post/{{ $post->id }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class='post__title'>
@@ -29,33 +29,37 @@
                         <h2>内容</h2>
                         <input type='text' name='post[body]' value="{{ $post->body }}">
                     </div>
+                    <div class="image">
+                        <h2>画像投稿</h2>
+                        @if($post->image)
+                            <img src="{{ $post->image }}" class='image'>
+                        @endif
+                        <input type="file" name="image">
+                    </div>
+                    <div class="calendars">
+                        <button type="button" id="add_calendar" onClick='change_hidden()'>カレンダーに追加</button>
+                        <div class="calendar" id='calendar_day' hidden>
+                            <label for="start_date">開始日時</label>
+                            <input id="new-start_date" class="input-date" type="date" name="post[start_date]" value="{{ $post->start_date }}" />
+                            <label for="end_date">終了日時</label>
+                            <input id="new-end_date" class="input-date" type="date" name="post[end_date]" value="{{ $post->end_date }}" />
+                            <label for="event_color">背景色</label>
+                            <select id="new-event_color" name="post[event_color]" value="{{ $post->event_color }}">
+                                <option value="blue" selected>青</option>
+                                <option value="green">緑</option>
+                            </select>
+                        </div>
+                    </div>
                     <input type="submit" value="保存">
                 </form>
             </div>
         </body>
-        <body>
-            <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</botton><!--新規投稿の作成-->
-            <div>
-                <h1>自分の投稿</h1>
-                <div class='myposts'>
-                    <!--自分の投稿を最新のものから表示-->
-                    @foreach($posts as $post)
-                        <div class='mypost'>
-                            <h2 class='title'>{{ $post->title }}</h2>
-                            @if($post->post_image)
-                                <img src="{{ $post->image }}" class='image'>
-                            @endif
-                            @if($post->post_body)
-                                <p class='body'>{{ $post->body }}</p>
-                            @endif
-                            <button action"{{ route('') }}">
-                                編集
-                            </button>
-                        </div>
-                    @endforeach
-                </div>
-                <div class='paginate'>{{ $posts->links() }}</div>
-            </div>
-        </body>
+        
+        <script>
+            function change_hidden(){
+                const calendar = document.getElementById("calendar_day");
+                calendar.hidden = false;
+            }
+        </script>
     </x-app-layout>
 </html>

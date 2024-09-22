@@ -19,7 +19,7 @@
                 @csrf
                 
                 <!-- actionの追加 -->
-                <input type="text" name='action[name]' placeholder='追加したい作業を入力'/>
+                <input type="text" name='action' placeholder='追加したい作業を入力'/>
                 
                 <input type="submit" value="追加"/>
             </form>
