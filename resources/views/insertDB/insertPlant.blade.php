@@ -19,7 +19,7 @@
                 @csrf
                 
                 <!-- actionの追加 -->
-                <input type="text" name='plant[name]' placeholder='追加したい作物を入力'/>
+                <input type="text" name='plant' placeholder='追加したい作物を入力'/>
                 
                 <input type="submit" value="追加"/>
             </form>

@@ -19,7 +19,7 @@ class HomeController extends Controller
 {
     public function homeindex(Post $post){
         return view('homes.homeindex')->with([
-            'posts' => $post->orderBy('updated_at', 'DESC')->paginate(10),
+            'posts' => $post->orderBy('created_at', 'DESC')->paginate(10),
         ]);
     }
 }

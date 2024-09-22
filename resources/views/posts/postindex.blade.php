@@ -16,7 +16,7 @@
             投稿
         </x-slot>
         <body>
-            <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</botton><!--新規投稿の作成-->
+            <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</button><!--新規投稿の作成-->
             <div>
                 <h1>自分の投稿</h1>
                 <div class='myposts'>
@@ -24,14 +24,14 @@
                     @foreach($posts as $post)
                         <div class='mypost'>
                             <h2 class='title'>{{ $post->title }}</h2>
-                            @if($post->post_image)
+                            @if($post->image)
                                 <img src="{{ $post->image }}" class='image'>
                             @endif
-                            @if($post->post_body)
+                            @if($post->body)
                                 <p class='body'>{{ $post->body }}</p>
                             @endif
-                            <a href="/{{ $post->id }}/edit">
-                                編集
+                            <a href="/post/{{ $post->id }}"><!--投稿の編集-->
+                                詳細表示
                             </a>
                         </div>
                     @endforeach

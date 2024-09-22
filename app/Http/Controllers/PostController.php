@@ -20,8 +20,12 @@ use App\Models\User;
 class PostController extends Controller
 {
     public function postindex(){
-        $post = Post::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->paginate(10);
+        $post = Post::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('posts.postindex')->with(['posts' => $post]);
+    }
+    
+    public function detail(Post $post){
+        return view('posts.detail')->with(['post' => $post]);
     }
     
     public function create(Action $action, Plant $plant, PlantVariety $plant_variety){
@@ -48,14 +52,20 @@ class PostController extends Controller
         return view('posts.postindex')->with(['posts' => $post]);
     }
     
-    public function edit(Request $request){
-        
-        
+    public function edit(Post $post){
+        return view('posts.edit')->with(['post' => $post]);
     }
     
-    public function update(Request $request){
+    public function update(Request $request, Post $post){
+        $input = $request['post'];
+        //画像データをcloudinalyに送信し、URLを取得
+        if($request->file('image')){
+            $image_url = Cloudinary::upload($request->file("image")->getRealPath())->getSecurePath();
+            $input +=  ['image' => $image_url];
+        }
+        $post->fill($input)->save();
         
-        
+        return redirect('/post/'.$post->id);
     }
     
     public function add_action(){
@@ -63,12 +73,12 @@ class PostController extends Controller
     }
     
     public function store_action(Request $request){
-        if (is_null(Action::where('name', $request['action']['name'])->first())){
-            $input = $request['action'];
+        if (is_null(Action::where('name', $request['action'])->first())){
+            $input = ['name' => $request['action']];
             $post = Action::create($input)->save();
         }
         
-        $post = Post::where('user_id', AUTH::user()->id)->orderBy('updated_at', 'DESC')->paginate(10);
+        $post = Post::where('user_id', AUTH::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('posts.postindex')->with(['posts' => $post]);
     }
     
@@ -77,12 +87,12 @@ class PostController extends Controller
     }
     
     public function store_plant(Request $request){
-        if (is_null(Action::where('name', $request['plant']['name'])->first())){
-            $input = $request['plant'];
+        if (is_null(Plant::where('name', $request['plant'])->first())){
+            $input = ['name' => $request['plant']];
             $post = Plant::create($input)->save();
         }
         
-        $post = Post::where('user_id', AUTH::user()->id)->orderBy('updated_at', 'DESC')->paginate(10);
+        $post = Post::where('user_id', AUTH::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('posts.postindex')->with(['posts' => $post]);
     }
     
@@ -91,15 +101,18 @@ class PostController extends Controller
         return view('insertDB.insertPlantVariety')->with(['plant'=>$plant_data]);
     }
     
-    public function store_plant_variety(Request $request){
-        if (is_null(Action::where([
-            'name', '=', $request['plant']['name'],
-            'plant_id', '=', $request['plant']['plant_id'],
+    public function store_plant_variety(Request $request, Plant $plant){
+        if (is_null(PlantVariety::where([
+            ['name', '=', $request['plantVariety']],
+            ['plant_id', '=', $request['plant_id']]
             ])->first())){
-            $input = $request['plantVariety'];
+            $input = [
+                'name' => $request['plantVariety'],
+                'plant_id' => $request['plant_id'],
+                ];
             $post = PlantVariety::create($input)->save();
         }
-        $post = Post::where('user_id', AUTH::user()->id)->orderBy('updated_at', 'DESC')->paginate(10);
+        $post = Post::where('user_id', AUTH::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
         return view('posts.postindex')->with(['posts' => $post]);
     }
 }

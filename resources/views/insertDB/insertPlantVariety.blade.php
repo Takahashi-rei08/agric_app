@@ -19,8 +19,8 @@
                 @csrf
                 
                 <!-- actionの追加 -->
-                <input type='hidden' name='plantVariety[plant_id]' value='{{ $plant['id'] }}'>
-                <input type="text" name='plantVariety[name]' placeholder='{{ $plant["name"] }}の追加したい品種を入力'/>
+                <input type='hidden' name='plant_id' value='{{ $plant->id }}'>
+                <input type="text" name='plantVariety' placeholder='{{ $plant["name"] }}の追加したい品種を入力'/>
                 
                 <input type="submit" value="追加"/>
             </form>
