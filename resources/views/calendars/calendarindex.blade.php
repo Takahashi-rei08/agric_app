@@ -107,7 +107,7 @@
                         <select name='action_id' id='select_action2'>
                             <option selected value=''>作業を選択</option>
                             @foreach($actions as $action)
-                                <option  value='{{ $action["action_id"] }}'>{{ $action["name"] }}</option>
+                                <option  value='{{ $action["id"] }}'>{{ $action["name"] }}</option>
                             @endforeach
                         </select>
                         

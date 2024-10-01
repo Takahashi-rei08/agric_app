@@ -24,6 +24,17 @@
                     @foreach($posts as $post)
                         <div class='mypost'>
                             <h2 class='title'>{{ $post->title }}</h2>
+                            <div class='plants'>
+                                @if($post->action_id)
+                                    <p class='action'>{{ $post->action->name }}</p>
+                                @endif
+                                @if($post->plant_id)
+                                    <p class='plant'>{{ $post->plant->name }}</p>
+                                @endif
+                                @if($post->plantVariety_id)
+                                    <p class='plantVariety'>{{ $post->plantVariety->name }}</p>
+                                @endif
+                            </div>
                             @if($post->image)
                                 <img src="{{ $post->image }}" class='image'>
                             @endif
