@@ -12,7 +12,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            Home
+            品種の追加
         </x-slot>
         <body>
             <form action="{{ route('store_plant_variety') }}" method='POST'>

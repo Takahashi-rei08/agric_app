@@ -38,6 +38,7 @@ class PostController extends Controller
     
     public function store(Request $request){
         $input = $request['post'];
+        $input += ['end_date' => date("Y-m-d", strtotime("{$request->input('end_date')} +1 day"))]; // FullCalendarが登録する終了日は仕様で1日ずれる
         $input += ['user_id' => Auth::id()];
         
         //画像データをcloudinalyに送信し、URLを取得

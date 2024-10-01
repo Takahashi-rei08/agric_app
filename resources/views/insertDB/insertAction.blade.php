@@ -12,7 +12,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            Home
+            作業の追加
         </x-slot>
         <body>
             <form action="{{ route('store_action') }}" method='POST'>

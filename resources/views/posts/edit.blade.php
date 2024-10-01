@@ -13,7 +13,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            投稿
+            投稿の編集
         </x-slot>
         <body>
             <h1 class="title">編集</h1>

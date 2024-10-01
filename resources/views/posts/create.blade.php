@@ -43,7 +43,7 @@
                         <label for="start_date">開始日時</label>
                         <input id="new-start_date" class="input-date" type="date" name="post[start_date]" value="" />
                         <label for="end_date">終了日時</label>
-                        <input id="new-end_date" class="input-date" type="date" name="post[end_date]" value="" />
+                        <input id="new-end_date" class="input-date" type="date" name="end_date" value="" />
                         <label for="event_color">背景色</label>
                         <select id="new-event_color" name="post[event_color]">
                             <option value="blue" selected>青</option>
@@ -56,7 +56,7 @@
                 <select name='post[action_id]' id='select_action'>
                     <option selected value=''>-- 作業を選択 --</option>
                     @foreach($actions as $action)
-                        <option  value='{{ $action["action_id"] }}'>{{ $action["name"] }}</option>
+                        <option  value='{{ $action["id"] }}'>{{ $action["name"] }}</option>
                     @endforeach
                 </select>
                 
@@ -94,9 +94,8 @@
         <div class="footer">
             <a href="/post">戻る</a>
         </div>
+        
         <script>
-            
-            
             function add_variety(){
                 const select_plant_variety = document.getElementById("select_plant_variety");
                 const botton_plant_variety = document.getElementById("add-plant_variety");
@@ -105,6 +104,7 @@
                 
                 let plantVarieties_data = @json($plantVarieties);
                 select_plant_variety.disabled = null;
+                //元のselectを消す
                 while(select_plant_variety.lastElementChild){
                     select_plant_variety.removeChild(select_plant_variety.lastChild);
                 }

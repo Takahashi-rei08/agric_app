@@ -14,6 +14,7 @@ class Schedule extends Model
 {
     use HasFactory;
     
+    // Controllerのfill用
     protected $fillable = [
         'user_id',
         'plant_id',
@@ -51,4 +52,5 @@ class Schedule extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    
 }

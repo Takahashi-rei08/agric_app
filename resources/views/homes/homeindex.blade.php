@@ -12,7 +12,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            Home
+            ホーム
         </x-slot>
         <body class='homes'>
             <div>

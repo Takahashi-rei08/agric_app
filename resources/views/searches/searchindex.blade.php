@@ -13,7 +13,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            app_name
+            検索
         </x-slot>
         <body class='searches'>
             <div class='search'>

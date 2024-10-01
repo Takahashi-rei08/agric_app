@@ -13,7 +13,7 @@
     
     <x-app-layout>
         <x-slot name="header">
-            投稿
+            投稿詳細
         </x-slot>
         <body>
             <div class='mypost'>
