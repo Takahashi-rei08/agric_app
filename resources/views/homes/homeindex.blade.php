@@ -12,12 +12,25 @@
     
     <x-app-layout>
         <x-slot name="header">
-            app_name
+            ホーム
         </x-slot>
         <body class='homes'>
-            <h1>home</h1>
             <div>
                 <h2>最新投稿</h2>
+                <div class='posts'>
+                    <!--投稿を最新のものから表示-->
+                    @foreach($posts as $post)
+                        <div class='mypost'>
+                            <h2 class='title'>{{ $post->title }}</h2>
+                            @if($post->image)
+                                <img src="{{ $post->image }}" class='image'>
+                            @endif
+                            @if($post->body)
+                                <p class='body'>{{ $post->body }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </body>
     </x-app-layout>

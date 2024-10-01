@@ -13,25 +13,26 @@
     
     <x-app-layout>
         <x-slot name="header">
-            app_name
+            投稿
         </x-slot>
         <body>
-            <button onclick="location.href='/post/add_post'" class='post_botton'>新規投稿</botton>
+            <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</button><!--新規投稿の作成-->
             <div>
                 <h1>自分の投稿</h1>
                 <div class='myposts'>
+                    <!--自分の投稿を最新のものから表示-->
                     @foreach($posts as $post)
                         <div class='mypost'>
-                            <h2 class='title'>{{ $post->post_title }}</h2>
-                            @if($post->post_image)
-                                @php
-                                    $img = "data:image/jpeg;base64," . base64_encode($record["picture"]); 
-                                @endphp
-                                <img src=<?= $img ?> class='image'>
+                            <h2 class='title'>{{ $post->title }}</h2>
+                            @if($post->image)
+                                <img src="{{ $post->image }}" class='image'>
                             @endif
-                            @if($post->post_body)
-                                <p class='body'>{{ $post->post_body }}</p>
+                            @if($post->body)
+                                <p class='body'>{{ $post->body }}</p>
                             @endif
+                            <a href="/post/{{ $post->id }}"><!--投稿の編集-->
+                                詳細表示
+                            </a>
                         </div>
                     @endforeach
                 </div>

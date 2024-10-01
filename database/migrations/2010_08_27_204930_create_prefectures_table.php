@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calendars', function (Blueprint $table) {
+        Schema::create('prefectures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->nullable(true)->constrained()->onDelete('cascade');#FK
-            $table->foreignId('schedule_id')->nullable(true)->constrained()->onDelete('cascade');#FK
+            $table->string('code');
+            $table->string('name');
         });
     }
 
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calendars');
+        Schema::dropIfExists('prefectures');
     }
 };

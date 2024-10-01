@@ -8,6 +8,16 @@
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
+        
+        <!-- Prefecture -->
+        <div>
+            <select name='select_prefecture' id='select_prefecture' onchange='can_click_btn()' required>
+                <option disabled selected value=''>-- 都道府県を選択 --</option>
+                @foreach($pref_datas as $pref_data)
+                    <option  value='{{ $pref_data["prefCode"] }},{{ $pref_data["prefName"] }}'>{{ $pref_data["prefName"] }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <!-- Email Address -->
         <div class="mt-4">
@@ -44,9 +54,15 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
+            <x-primary-button class="ms-4" id='register-button' disabled>
+                {{ __('市区町村の登録') }}
             </x-primary-button>
         </div>
     </form>
+    <script>
+        function can_click_btn(){
+            const button = document.getElementById('register-button');
+            button.disabled = null;
+        };
+    </script>
 </x-guest-layout>

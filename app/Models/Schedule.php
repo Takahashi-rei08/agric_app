@@ -14,6 +14,20 @@ class Schedule extends Model
 {
     use HasFactory;
     
+    // Controllerのfill用
+    protected $fillable = [
+        'user_id',
+        'plant_id',
+        'plantVariety_id',
+        'action_id',
+        'event_title',
+        'event_body',
+        'start_date',
+        'end_date',
+        'event_color',
+        'event_border_color',
+    ];
+    
     //calendarsテーブルに対するリレーション
     public function calendar(){
         return $this->hasOne(Calendar::class);
@@ -29,18 +43,14 @@ class Schedule extends Model
         return $this->belongsTo(Plant::class);
     }
     
+    //plantVarietyテーブルに対するリレーション
+    public function plantVariety(){
+        return $this->belongsTo(PlantVariety::class);
+    }
+    
     //usersテーブルに対するリレーション
     public function user(){
         return $this->belongsTo(User::class);
     }
     
-    // Controllerのfill用
-    protected $fillable = [
-        'event_title',
-        'event_body',
-        'start_date',
-        'end_date',
-        'event_color',
-        'event_border_color',
-    ];
 }

@@ -4,12 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Plant_Location;
+use App\Models\Plant_City;
 use App\Models\Plant;
+use App\Models\User;
 
-class Location extends Model
+class City extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'code',
+        'name',
+        'prefecture_id',
+    ];
     
     //usersテーブルに対するリレーション
     public function users(){
@@ -20,4 +27,6 @@ class Location extends Model
     public function plants(){
         return $this->belongsToMany(Plant::class, 'plant_location');
     }
+    
+    public $timestamps = false;
 }

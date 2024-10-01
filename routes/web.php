@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,10 @@ use App\Http\Controllers\SearchController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::controller(RegisteredUserController::class)->middleware('auth')->group(function () {
+    Route::get('/city/{pref_code}', 'city');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -38,8 +43,22 @@ Route::controller(SearchController::class)->middleware(['auth'])->group(function
 });
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
-    Route::get('/post', 'postindex')->name('postindex');
-    Route::get('/post/add_post', 'add_post')->name('add_post');
+    Route::get('/post', 'postindex')->name('postindex'); // 投稿の表示
+    Route::get('/post/create', 'create')->name('create_post'); // 新規投稿
+    Route::post('/post/create', 'store')->name('store_post');
+    Route::get('/post/{post}', 'detail')->name('detail'); // 投稿の表示
+    
+    Route::get('/post/{post}/edit', 'edit')->name('edit_post'); // 投稿の編集
+    Route::put('/post/{post}', 'update')->name('update_post');
+    
+    Route::get('/action', 'add_action')->name('add_action'); // 作業の追加
+    Route::post('/action', 'store_action')->name('store_action');
+    
+    Route::get('/plant', 'add_plant')->name('add_plant'); // 植物の追加
+    Route::post('/plant', 'store_plant')->name('store_plant');
+    
+    Route::get('/plant/{plant_code}', 'add_plant_variety')->name('add_plant_variety'); // 品種の追加
+    Route::post('/plant', 'store_plant_variety')->name('store_plant_variety');
 });
 
 Route::controller(CalendarController::class)->middleware(['auth'])->group(function(){

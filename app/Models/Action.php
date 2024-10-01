@@ -11,13 +11,19 @@ class Action extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'name',
+    ];
+    
     //schedulesテーブルに対するリレーション
     public function schedules(){
         return $this->hasMany(Schedule::class);
     }
     
     //postsテーブルに対するリレーション
-    public function schedules(){
-        return $this->hasMany(Schedule::class);
+    public function posts(){
+        return $this->hasMany(Post::class);
     }
+    
+    public $timestamps = false;
 }

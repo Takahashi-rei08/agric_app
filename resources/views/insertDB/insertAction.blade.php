@@ -2,9 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Search</title>
+        <title>Home</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,12 +12,17 @@
     
     <x-app-layout>
         <x-slot name="header">
-            検索
+            作業の追加
         </x-slot>
-        <body class='searches'>
-            <div class='search'>
-                <h1>検索</h1>
-            </div>
+        <body>
+            <form action="{{ route('store_action') }}" method='POST'>
+                @csrf
+                
+                <!-- actionの追加 -->
+                <input type="text" name='action' placeholder='追加したい作業を入力'/>
+                
+                <input type="submit" value="追加"/>
+            </form>
         </body>
     </x-app-layout>
 </html>
