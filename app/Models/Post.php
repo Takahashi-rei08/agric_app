@@ -50,7 +50,7 @@ class Post extends Model
     
     //plantVarietyテーブルに対するリレーション
     public function plantVariety(){
-        return $this->belongsTo(PlantVariety::class);
+        return $this->belongsTo(PlantVariety::class, 'plantVariety_id');
     }
     
     //actionsテーブルに対するリレーション

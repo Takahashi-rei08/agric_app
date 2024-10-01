@@ -53,8 +53,13 @@ class PostController extends Controller
         return view('posts.postindex')->with(['posts' => $post]);
     }
     
-    public function edit(Post $post){
-        return view('posts.edit')->with(['post' => $post]);
+    public function edit(Post $post, Action $action, Plant $plant, PlantVariety $plant_variety){
+        return view('posts.edit')->with([
+            'post' => $post,
+            'actions' => $action->orderBy('name')->get(),
+            'plants' => $plant->orderBy('name')->get(),
+            'plantVarieties' => $plant_variety->orderBy('name')->get(),
+        ]);
     }
     
     public function update(Request $request, Post $post){
@@ -68,6 +73,12 @@ class PostController extends Controller
         
         return redirect('/post/'.$post->id);
     }
+    
+    public function delete(Post $post) {
+        $post->delete();
+        return redirect('/post');
+    }
+
     
     public function add_action(){
         return view('insertDB.insertAction');

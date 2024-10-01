@@ -18,6 +18,17 @@
         <body>
             <div class='mypost'>
                 <h2 class='title'>{{ $post->title }}</h2>
+                <div class='plants'>
+                    @if($post->action_id)
+                        <p class='action'>{{ $post->action->name }}</p>
+                    @endif
+                    @if($post->plant_id)
+                        <p class='plant'>{{ $post->plant->name }}</p>
+                    @endif
+                    @if($post->plantVariety_id)
+                        <p class='plantVariety'>{{ $post->plantVariety->name }}</p>
+                    @endif
+                </div>
                 @if($post->image)
                     <img src="{{ $post->image }}" class='image'>
                 @endif
@@ -32,10 +43,25 @@
                 <a href="/post/{{ $post->id }}/edit"><!--投稿の編集-->
                     編集
                 </a>
+                <form action="/post/{{ $post->id }}/delete" id="form_{{ $post->id }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="deletePost({{ $post->id }})">削除</button>
+                </form>
+
             </div>
             <div class="footer">
                 <a href='/post'>戻る</a>
             </div>
         </body>
+        <script>
+            function deletePost(id) {
+                'use strict'
+                if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                    document.getElementById(`form_${id}`).submit();
+                }
+            }
+        </script>
+
     </x-app-layout>
 </html>

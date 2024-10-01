@@ -17,7 +17,7 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
-    public function homeindex(Post $post){
+    public function homeindex(Post $post, User $user){
         return view('homes.homeindex')->with([
             'posts' => $post->orderBy('created_at', 'DESC')->paginate(10),
         ]);

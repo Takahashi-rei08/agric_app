@@ -47,6 +47,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::get('/post/create', 'create')->name('create_post'); // 新規投稿
     Route::post('/post/create', 'store')->name('store_post');
     Route::get('/post/{post}', 'detail')->name('detail'); // 投稿の表示
+    Route::delete('/post/{post}/delete', 'delete')->name('delete_post'); // 投稿の削除
     
     Route::get('/post/{post}/edit', 'edit')->name('edit_post'); // 投稿の編集
     Route::put('/post/{post}', 'update')->name('update_post');

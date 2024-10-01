@@ -126,7 +126,6 @@ if (calendarEl) {
             if(selectedPlant !== null　&& selectedPlant !== undefined){ //nullを除外
                 const plantIndex = Number(selectedPlant);
                 for(let i = 0; i < selectPlant.options.length; i++){ //select要素内のoptionをループ
-                    console.log(Number(selectPlant.options[i].value), ';', plantIndex)
                     if(Number(selectPlant.options[i].value) === plantIndex){
                         selectPlant.options[i].selected = true; //マッチしたindexを選択
                         // 品種の選択肢の追加
