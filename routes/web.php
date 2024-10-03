@@ -46,7 +46,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::get('/post', 'postindex')->name('postindex'); // 投稿の表示
     Route::get('/post/create', 'create')->name('create_post'); // 新規投稿
     Route::post('/post/create', 'store')->name('store_post');
-    Route::get('/post/{post}', 'detail')->name('detail'); // 投稿の表示
+    Route::get('/post/{post}', 'detail')->name('detail'); // 投稿の詳細表示
     Route::delete('/post/{post}/delete', 'delete')->name('delete_post'); // 投稿の削除
     
     Route::get('/post/{post}/edit', 'edit')->name('edit_post'); // 投稿の編集
@@ -66,6 +66,7 @@ Route::controller(CalendarController::class)->middleware(['auth'])->group(functi
     Route::get('/calendar', 'show')->name('show');// カレンダー表示
     Route::post('/calendar/add_schedule', 'add_schedule')->name('add_schedule'); // 予定の新規追加
     Route::post('/calendar/get_schedule', 'get_schedule')->name("get_schedule"); // DBに登録した予定を取得
+    Route::post('/calendar/get_post', 'get_post')->name("get_post"); // DBに登録した投稿を取得
     Route::put('/calendar/update', 'update')->name("update"); // 予定の更新
     Route::delete('/calendar/delete', 'delete')->name("delete"); // 予定の削除
 });
