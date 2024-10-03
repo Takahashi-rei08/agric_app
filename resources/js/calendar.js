@@ -72,105 +72,139 @@ if (calendarEl) {
         
         // DBに登録した予定を表示する
         events: function (info, successCallback, failureCallback) { // eventsはページが切り替わるたびに実行される
-            // axiosでLaravelの予定取得処理を呼び出す
-            axios
-                .post("/calendar/get_schedule", {
-                    // 現在カレンダーが表示している日付の期間(1月ならば、start_date=1月1日、end_date=1月31日となる)
-                    start_date: info.start.valueOf(),
-                    end_date: info.end.valueOf(),
+            // 現在カレンダーが表示している日付の期間を設定
+            const startDate = info.start.valueOf();
+            const endDate = info.end.valueOf();
+            
+            // 並行してリクエストを実行
+            Promise.all([
+                // axiosでLaravelの予定取得処理を呼び出す
+                axios.post("/calendar/get_schedule", {
+                    start_date: startDate,
+                    end_date: endDate,
+                }),
+                axios.post("/calendar/get_post", {
+                    start_date: startDate,
+                    end_date: endDate,
                 })
-                .then((response) => {
-                    // 既に表示されているイベントを削除（重複防止）
-                    calendar.removeAllEvents();
-                    // カレンダーに読み込み
-                    successCallback(response.data); // successCallbackに予定をオブジェクト型で入れるとカレンダーに表示できる
-                })
-                .catch((error) => {
-                    // バリデーションエラーなど
-                    alert("登録に失敗しました。");
-                });
+            ])
+            
+            .then((responses) => {
+                const scheduleResponse = responses[0].data;
+                const postResponse = responses[1].data;
+                
+                // postかscheduleか判断するプロパティを入れる
+                const judgedScheduleResponse = scheduleResponse.map(item => ({
+                    ...item,
+                    isSchedule: true // scheduleならtrue
+                }));
+                const judgedPostResponse = postResponse.map(item => ({
+                    ...item,
+                    isSchedule: false // postならfalse
+                }));
+                
+                // 既に表示されているイベントを削除（重複防止）
+                calendar.removeAllEvents();
+                
+                // まとめたイベントを一つの配列にまとめる
+                const allEvents = [...judgedScheduleResponse, ...judgedPostResponse];
+                
+                // カレンダーに読み込み
+                successCallback(allEvents); // successCallbackに予定をオブジェクト型で入れるとカレンダーに表示できる
+            })
+            .catch((error) => {
+                // バリデーションエラーなど
+                alert("登録に失敗しました。");
+            });
         },
         
         // 予定をクリックすると予定編集モーダルが表示される
         eventClick: function(info) {
-            //console.log(info.event); // info.event内に予定の全情報が入っているので、必要に応じて参照すること
-            document.getElementById("id").value = info.event.id;
-            document.getElementById("delete-id").value = info.event.id;
-            document.getElementById("event_title").value = info.event.title;
-            document.getElementById("start_date").value = formatDate(info.event.start);
-            document.getElementById("end_date").value = formatDate(info.event.end, "end");
-            document.getElementById("event_body").value = info.event.extendedProps.description;
-            document.getElementById("event_color").value = info.event.backgroundColor;
-            
-            let jsonSceduleDatas = document.getElementById("schedule_datas").getAttribute('value'); //value値の取得
-            const scheduleDatas = JSON.parse(jsonSceduleDatas.replace(/&quot;/g, '"')); //JSONを連想配列に変換
-            let eventId = Number(info.event.id) - 1; //indexを合わせる
-            //actionの選択
-            let selectedAction = scheduleDatas[eventId]['action_id']; //元のindex
-            const selectAction = document.getElementById("select_action2");
-            if (selectedAction !== null && selectedAction !== undefined) { //nullを除外
-                const actionIndex = Number(selectedAction);
-                for(let i = 0; i < selectAction.options.length; i++){ //select要素内のoptionをループ
-                    console.log(selectAction.options[i].value, ';', actionIndex)
-                    if(Number(selectAction.options[i].value) === actionIndex){
-                        selectAction.options[i].selected = true; //マッチしたindexを選択
-                        break; //ループを抜ける
-                    }
-                }
-            } else {
-                selectAction.options[0].selected = true;
-            }
-            //plantの選択
-            let selectedPlant = scheduleDatas[eventId]['plant_id'];
-            const selectPlant = document.getElementById("select_plant2");
-            if(selectedPlant !== null　&& selectedPlant !== undefined){ //nullを除外
-                const plantIndex = Number(selectedPlant);
-                for(let i = 0; i < selectPlant.options.length; i++){ //select要素内のoptionをループ
-                    if(Number(selectPlant.options[i].value) === plantIndex){
-                        selectPlant.options[i].selected = true; //マッチしたindexを選択
-                        // 品種の選択肢の追加
-                        const select_plant_variety = document.getElementById("select_plant_variety2");
-                        //元のoptionを全て消す
-                        while(select_plant_variety.lastElementChild){
-                            select_plant_variety.removeChild(select_plant_variety.lastChild);
+            // scheduleなら編集モーダルを表示
+            if(info.event.isSchedule){
+                //console.log(info.event); // info.event内に予定の全情報が入っているので、必要に応じて参照すること
+                document.getElementById("id").value = info.event.id;
+                document.getElementById("delete-id").value = info.event.id;
+                document.getElementById("event_title").value = info.event.title;
+                document.getElementById("start_date").value = formatDate(info.event.start);
+                document.getElementById("end_date").value = formatDate(info.event.end, "end");
+                document.getElementById("event_body").value = info.event.extendedProps.description;
+                document.getElementById("event_color").value = info.event.backgroundColor;
+                
+                let jsonSceduleDatas = document.getElementById("schedule_datas").getAttribute('value'); //value値の取得
+                const scheduleDatas = JSON.parse(jsonSceduleDatas.replace(/&quot;/g, '"')); //JSONを連想配列に変換
+                let eventId = Number(info.event.id) - 1; //indexを合わせる
+                //actionの選択
+                let selectedAction = scheduleDatas[eventId]['action_id']; //元のindex
+                const selectAction = document.getElementById("select_action2");
+                if (selectedAction !== null && selectedAction !== undefined) { //nullを除外
+                    const actionIndex = Number(selectedAction);
+                    for(let i = 0; i < selectAction.options.length; i++){ //select要素内のoptionをループ
+                        console.log(selectAction.options[i].value, ';', actionIndex)
+                        if(Number(selectAction.options[i].value) === actionIndex){
+                            selectAction.options[i].selected = true; //マッチしたindexを選択
+                            break; //ループを抜ける
                         }
-                        var option = document.createElement("option");
-                        option.text = "品種を選択";
-                        option.value = '';
-                        select_plant_variety.appendChild(option); //optionを追加
-                        var select_plant  = document.getElementById("select_plant2");
-                        let jsonPlantVarietyDatas = document.getElementById("plantVarieties_datas").getAttribute('value'); //value値の取得
-                        const plantVarietyDatas = JSON.parse(jsonPlantVarietyDatas.replace(/&quot;/g, '"')); //JSONを連想配列に変換
-                        for(let i = 0; i < plantVarietyDatas.length; ++i){ //select要素内のoptionをループ
-                            if(plantVarietyDatas[i]["plant_id"] == select_plant.value){
-                                var option = document.createElement("option");
-                                option.value = plantVarietyDatas[i]["id"];
-                                option.text = plantVarietyDatas[i]["name"];
-                                select_plant_variety.appendChild(option);
+                    }
+                } else {
+                    selectAction.options[0].selected = true;
+                }
+                //plantの選択
+                let selectedPlant = scheduleDatas[eventId]['plant_id'];
+                const selectPlant = document.getElementById("select_plant2");
+                if(selectedPlant !== null　&& selectedPlant !== undefined){ //nullを除外
+                    const plantIndex = Number(selectedPlant);
+                    for(let i = 0; i < selectPlant.options.length; i++){ //select要素内のoptionをループ
+                        if(Number(selectPlant.options[i].value) === plantIndex){
+                            selectPlant.options[i].selected = true; //マッチしたindexを選択
+                            // 品種の選択肢の追加
+                            const select_plant_variety = document.getElementById("select_plant_variety2");
+                            //元のoptionを全て消す
+                            while(select_plant_variety.lastElementChild){
+                                select_plant_variety.removeChild(select_plant_variety.lastChild);
                             }
+                            var option = document.createElement("option");
+                            option.text = "品種を選択";
+                            option.value = '';
+                            select_plant_variety.appendChild(option); //optionを追加
+                            var select_plant  = document.getElementById("select_plant2");
+                            let jsonPlantVarietyDatas = document.getElementById("plantVarieties_datas").getAttribute('value'); //value値の取得
+                            const plantVarietyDatas = JSON.parse(jsonPlantVarietyDatas.replace(/&quot;/g, '"')); //JSONを連想配列に変換
+                            for(let i = 0; i < plantVarietyDatas.length; ++i){ //select要素内のoptionをループ
+                                if(plantVarietyDatas[i]["plant_id"] == select_plant.value){
+                                    var option = document.createElement("option");
+                                    option.value = plantVarietyDatas[i]["id"];
+                                    option.text = plantVarietyDatas[i]["name"];
+                                    select_plant_variety.appendChild(option);
+                                }
+                            }
+                            break;
                         }
-                        break;
                     }
+                } else {
+                    selectPlant.options[0].selected = true; //マッチしたindexを選択
                 }
-            } else {
-                selectPlant.options[0].selected = true; //マッチしたindexを選択
-            }
-            let selectedPlantVariety = scheduleDatas[eventId]['plantVariety_id'];
-            const selectPlantVariety = document.getElementById("select_plant_variety2");
-            if(selectedPlantVariety !== null && selectedPlantVariety !== undefined){ //nullを除外
-                const plantVarietyIndex = Number(selectedPlantVariety);
-                for(let i = 0; i < selectPlantVariety.options.length; i++){ //select要素内のoptionをループ
-                    if(Number(selectPlantVariety.options[i].value) === plantVarietyIndex){
-                        selectPlantVariety.options[i].selected = true;
-                        break;
+                let selectedPlantVariety = scheduleDatas[eventId]['plantVariety_id'];
+                const selectPlantVariety = document.getElementById("select_plant_variety2");
+                if(selectedPlantVariety !== null && selectedPlantVariety !== undefined){ //nullを除外
+                    const plantVarietyIndex = Number(selectedPlantVariety);
+                    for(let i = 0; i < selectPlantVariety.options.length; i++){ //select要素内のoptionをループ
+                        if(Number(selectPlantVariety.options[i].value) === plantVarietyIndex){
+                            selectPlantVariety.options[i].selected = true;
+                            break;
+                        }
                     }
+                } else {
+                    selectPlantVariety.options[0].selected = true;
                 }
-            } else {
-                selectPlantVariety.options[0].selected = true;
+        
+                // 予定編集モーダルを開く
+                document.getElementById('modal-update').style.display = 'flex';
             }
-    
-            // 予定編集モーダルを開く
-            document.getElementById('modal-update').style.display = 'flex';
+            // postなら詳細のページに飛ぶ
+            else{
+                window.location.href = `../post/${info.event.id}`
+            }
         },
     });
     
