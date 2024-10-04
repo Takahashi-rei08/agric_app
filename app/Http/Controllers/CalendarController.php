@@ -126,8 +126,8 @@ class CalendarController extends Controller
         $input->plantVariety_id = $request->input('plantVariety_id');
         $input->action_id = $request->input('action_id');
 
-        // 更新する予定をDBから探し（find）、内容が変更していたらupdated_timeを変更（fill）して、DBに保存する（save）
-        $schedule->find($request->input('id'))->fill($input->attributesToArray())->save(); // fill()の中身はArray型が必要だが、$inputのままではコレクションが返ってきてしまうため、Array型に変換
+        // 更新する予定をDBから探し、内容が変更していたらupdated_timeを変更して、DBに保存する（save）
+        $schedule->find($request->input('id'))->fill($input->attributesToArray())->save(); // Array型に変換
 
         // カレンダー表示画面にリダイレクトする
         return redirect(route("show"));
