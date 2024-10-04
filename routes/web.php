@@ -40,6 +40,7 @@ Route::controller(HomeController::class)->middleware('auth')->group(function () 
 
 Route::controller(SearchController::class)->middleware(['auth'])->group(function(){
     Route::get('/search', 'searchindex')->name('searchindex');
+    Route::get('/search/post', 'searched_post')->name('searched_post');
 });
 
 Route::controller(PostController::class)->middleware(['auth'])->group(function(){
