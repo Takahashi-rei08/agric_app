@@ -18,7 +18,18 @@
         </x-slot>
         <body class='calendars'>
             <h1>カレンダー</h1>
-            <div id='calendar'></div><!-- divタグ内にカレンダーを表示 -->
+            <button type="button" id='fiveYearsCalendars' onClick='showFiveYearCalendars()'>5年分のカレンダーを表示</button>
+            <button type="button" id='oneYearCalendar' onClick='showOneCalendar()'>1年分のカレンダーを表示</button>
+            
+            <div class='calendar' id='calendar0'></div><!-- divタグ内にカレンダーを表示 -->
+            
+            <div id='fourYearsCalendars'>
+                <div class='calendar' id='calendar1'></div>
+                <div class='calendar' id='calendar2'></div>
+                <div class='calendar' id='calendar3'></div>
+                <div class='calendar' id='calendar4'></div>
+            </div> <!-- divタグ内に過去４年分のカレンダーを表示 -->
+            
             
             <!-- カレンダー新規追加モーダル -->
             <div id="modal-add" class="modal">
@@ -226,11 +237,40 @@
                 console.log(plant_id);
                 window.location.href = '../../plant/'+plant_id;
             }
+            
+            // カレンダーを表示させたいタグのidを取得
+            const calendarEls = [
+                document.getElementById("calendar0"),
+                document.getElementById("calendar1"),
+                document.getElementById("calendar2"),
+                document.getElementById("calendar3"),
+                document.getElementById("calendar4"),
+            ];
+            
+            // 1年分のカレンダーのみ表示
+            function showOneCalendar() {
+                for(let i=1; i<5; i++){
+                    calendarEls[i].hidden=true;
+                }
+            }
+            // 5年分のカレンダーを表示
+            function showFiveYearCalendars() {
+                for(let i=1; i<5; i++){
+                    calendarEls[i].hidden=false;
+                }
+            }
         </script>
     </x-app-layout>
 </html>
 
 <style scoped>
+.calendars{
+    display: flex;
+    flex-wrap: wrap; /* カレンダーを折り返して表示 */
+}
+.calendar{
+    flex: 1 0 18%; /* 各カレンダーの幅を調整 */
+}
 /* 予定の上ではカーソルがポインターになる */
 .fc-event-title-container{
     cursor: pointer;
@@ -241,7 +281,7 @@
     display: none; /* モーダル開くとflexに変更（ここの切り替えでモーダルの表示非表示をコントロール） */
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     z-index: 10; /* カレンダーの曜日表示がz-index=2のため、それ以上にする必要あり */
     top: 0;
     left: 0;
