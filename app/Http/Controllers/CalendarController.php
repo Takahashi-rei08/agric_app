@@ -109,7 +109,7 @@ class CalendarController extends Controller
             )
             // 表示されているカレンダーのeventのみをDBから検索して表示
             ->where('end_date', '>', $start_date)
-            ->where('start_date', '<', $end_date) // AND条件
+            ->where('start_date', '<', $end_date)
             ->get();
     }
     
