@@ -17,41 +17,34 @@
         </x-slot>
         <body>
             <div class='mypost'>
-                <h2 class='title'>{{ $post->title }}</h2>
+                <p id='titleLabel'>タイトル</p>
+                <h2 id='postTitle'>{{ $post->title }}</h2>
                 <div class='plants'>
-                    @if($post->action_id)
-                        <p class='action'>{{ $post->action->name }}</p>
-                    @endif
-                    @if($post->plant_id)
-                        <p class='plant'>{{ $post->plant->name }}</p>
-                    @endif
-                    @if($post->plantVariety_id)
-                        <p class='plantVariety'>{{ $post->plantVariety->name }}</p>
-                    @endif
+                    <p class='action'>作業：{{ optional($post->action)->name ? optional($post->action)->name : '未設定' }}</p>
+                    <p class='plant'>作物：{{ optional($post->plant)->name ? optional($post->plant)->name : '未設定' }}</p>
+                    <p class='plantVariety'>品種：{{ optional($post->plantVariety)->name ? optional($post->plantVariety)->name : '未設定' }}</p>
                 </div>
                 @if($post->image)
                     <img src="{{ $post->image }}" class='image'>
                 @endif
-                @if($post->body)
-                    <p class='body'>{{ $post->body }}</p>
-                @endif
-                @if($post->start_date)
-                    <p class='start_date'>{{ $post->start_date }}</p>
-                    <p class='end_date'>{{ $post->end_date }}</p>
-                    <p class='event_color'>{{ $post->event_color }}</p>
-                @endif
-                <a href="/post/{{ $post->id }}/edit"><!--投稿の編集-->
-                    編集
-                </a>
-                <form action="/post/{{ $post->id }}/delete" id="form_{{ $post->id }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" onclick="deletePost({{ $post->id }})">削除</button>
-                </form>
+                <p class='body'>{{ $post->body ? $post->body : '未設定' }}</p>
+                <p class='start_date'>開始日 : {{ $post->start_date ? $post->start_date : '未設定' }}</p>
+                <p class='end_date'>終了日 : {{ $post->end_date ? $post->end_date : '未設定' }}</p>
+                <p class='event_color'>イベントカラー : {{ $post->event_color ? $post->event_color : '未設定' }}</p>
+                <div class="button-group">
+                    <a id='edit' href="/post/{{ $post->id }}/edit"><!--投稿の編集-->
+                        編集
+                    </a>
+                    <form action="/post/{{ $post->id }}/delete" id="form_{{ $post->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button id='delete' type="button" onclick="deletePost({{ $post->id }})">削除</button>
+                    </form>
+                </div>
 
             </div>
             <div class="footer">
-                <a href='/post'>戻る</a>
+                <a id='return' href='/post'>戻る</a>
             </div>
         </body>
         <script>
@@ -65,3 +58,60 @@
 
     </x-app-layout>
 </html>
+
+<style>
+    .mypost{
+        margin: 15px 0;
+        padding: 12px;
+    }
+    #titleLabel{
+        font-size: 15px;
+    }
+    #postTitle{
+        font-size: 25px;
+    }
+    .plants{
+        font-size: 15px;
+    }
+    .body{
+        font-size: 15px;
+    }
+    #edit{
+        display: inline-block;
+        background-color: green;
+        color: white;
+        font-size: 15px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+    #delete{
+        display: inline-block;
+        background-color: red;
+        color: white;
+        font-size: 15px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+    .button-group {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+    #return{
+        display: inline-block;
+        background-color: grey;
+        color: white;
+        font-size: 15px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+</style>

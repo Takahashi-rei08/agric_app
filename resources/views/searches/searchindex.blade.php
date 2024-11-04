@@ -79,3 +79,31 @@
         </script>
     </x-app-layout>
 </html>
+
+<style>
+    select {
+        display: block;
+        width: 80%;
+        max-width: 300px;
+        margin: 10px auto;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid gray;
+        box-sizing: border-box;
+    }
+    
+    /* ボタンのスタイル */
+    input[type="submit"] {
+        display: block;
+        width: 80%;
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 10px;
+        font-size: 16px;
+        color: white;
+        background-color: green;
+        border: 2px solid black;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>

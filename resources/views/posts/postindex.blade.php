@@ -16,23 +16,28 @@
             投稿
         </x-slot>
         <body>
-            <button onclick="location.href='/post/create'" class='post_botton'>新規投稿</button><!--新規投稿の作成-->
+            <button onclick="location.href='/post/create'" class='post_button'>新規投稿</button><!--新規投稿の作成-->
             <div>
-                <h1>自分の投稿</h1>
-                <div class='myposts'>
-                    <!--自分の投稿を最新のものから表示-->
+                <h1 id='pageTitle'>自分の投稿</h1>
+                <div class='posts'>
+                    <!--投稿を最新のものから表示-->
                     @foreach($posts as $post)
-                        <div class='mypost'>
-                            <h2 class='title'>{{ $post->title }}</h2>
+                        <div class='post'>
+                            <div class='user'>
+                                <p id='userNameLabel'>ユーザーネーム</p>
+                                <p id='userName'>{{ $post->user->name }}</p>
+                            </div>
+                            <p id='titleLabel'>タイトル</p>
+                            <h2 id='postTitle'>{{ $post->title }}</h2>
                             <div class='plants'>
                                 @if($post->action_id)
-                                    <p class='action'>{{ $post->action->name }}</p>
+                                    <p class='action'>作業：{{ $post->action->name }}</p>
                                 @endif
                                 @if($post->plant_id)
-                                    <p class='plant'>{{ $post->plant->name }}</p>
-                                @endif
-                                @if($post->plantVariety_id)
-                                    <p class='plantVariety'>{{ $post->plantVariety->name }}</p>
+                                    <p class='plant'>作物：{{ $post->plant->name }}</p>
+                                    @if($post->plantVariety_id)
+                                        <p class='plantVariety'>品種：{{ $post->plantVariety->name}}</p>
+                                    @endif
                                 @endif
                             </div>
                             @if($post->image)
@@ -41,7 +46,7 @@
                             @if($post->body)
                                 <p class='body'>{{ $post->body }}</p>
                             @endif
-                            <a href="/post/{{ $post->id }}"><!--投稿の編集-->
+                            <a id='detail' href="/post/{{ $post->id }}"><!--投稿の編集-->
                                 詳細表示
                             </a>
                         </div>
@@ -52,3 +57,53 @@
         </body>
     </x-app-layout>
 </html>
+
+<style>
+    #pageTitle{
+        font-size: 25px;
+    }
+    .post{
+        border: 1px solid gray;
+        margin: 15px 0;
+        padding: 12px;
+    }
+    #userNameLabel{
+        font-size: 15px;
+    }
+    #userName{
+        font-size: 25px;
+    }
+    #titleLabel{
+        font-size: 15px;
+    }
+    #postTitle{
+        font-size: 25px;
+    }
+    .plants{
+        font-size: 15px;
+    }
+    .body{
+        font-size: 15px;
+    }
+    .post_button {
+        background-color: green;
+        color: white;
+        font-size: 25px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    #detail{
+        display: inline-block;
+        background-color: green;
+        color: white;
+        font-size: 15px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+    }
+</style>
