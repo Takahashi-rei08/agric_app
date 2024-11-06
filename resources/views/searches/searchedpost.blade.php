@@ -19,20 +19,22 @@
                 <div class='posts'>
                     <!--投稿を最新のものから表示-->
                     @foreach($posts as $post)
-                        <div class='user'>
-                            <p id='userName'>{{ $post->user->name }}</p>
-                        </div>
                         <div class='post'>
-                            <h2 class='title'>{{ $post->title }}</h2>
+                            <div class='user'>
+                                <p id='userNameLabel'>ユーザーネーム</p>
+                                <p id='userName'>{{ $post->user->name }}</p>
+                            </div>
+                            <p id='titleLabel'>タイトル</p>
+                            <h2 id='postTitle'>{{ $post->title }}</h2>
                             <div class='plants'>
                                 @if($post->action_id)
-                                    <p class='action'>{{ $post->action->name }}</p>
+                                    <p class='action'>作業：{{ $post->action->name }}</p>
                                 @endif
                                 @if($post->plant_id)
-                                    <p class='plant'>{{ $post->plant->name }}</p>
-                                @endif
-                                @if($post->plantVariety_id)
-                                    <p class='plantVariety'>{{ $post->plantVariety ? $post->plantVariety->name : '未設定' }}</p>
+                                    <p class='plant'>作物：{{ $post->plant->name }}</p>
+                                    @if($post->plantVariety_id)
+                                        <p class='plantVariety'>品種：{{ $post->plantVariety->name}}</p>
+                                    @endif
                                 @endif
                             </div>
                             @if($post->image)
@@ -49,3 +51,29 @@
         </body>
     </x-app-layout>
 </html>
+
+<style>
+    .post{
+        border: 1px solid gray;
+        margin: 15px 0;
+        padding: 12px;
+    }
+    #userNameLabel{
+        font-size: 15px;
+    }
+    #userName{
+        font-size: 25px;
+    }
+    #titleLabel{
+        font-size: 15px;
+    }
+    #postTitle{
+        font-size: 25px;
+    }
+    .plants{
+        font-size: 15px;
+    }
+    .body{
+        font-size: 15px;
+    }
+</style>
